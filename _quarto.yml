@@ -7,7 +7,7 @@ execute:
   warning: false
   message: false
 book:
-  title: "Clinical Trials"
+  title: "Clinical Trials TEST"
   author:
     - Sam RusselHapp (scr2168)
 
