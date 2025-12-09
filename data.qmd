@@ -226,5 +226,15 @@ ggplot(
 
 ```{r}
 ## Description
-
+ggplot(
+  subset(Top_1000, !is.na(Study.Status)),
+  aes(x = Phase_Rank, fill = Study.Status)) +
+  geom_bar() + 
+  scale_fill_manual(
+    values = c(
+      "Completed" = "forestgreen",
+      "Terminated" = "firebrick")) +
+  labs(title = "Completion Status by Trial Phase",
+       x = "Trial Phase",
+       y = "Frequency")
 ## Missing value analysis
