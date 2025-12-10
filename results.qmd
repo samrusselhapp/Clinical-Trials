@@ -13,9 +13,11 @@ library(choroplethr)
 library(dplyr)
 library(tidyr)
 library(tibble)
+library(ggalluvial)
+
 ```
 
-
+## Breast Cancer clinical trials across the top 200 breast cancer trials in the US is shown. The data displayed shows which states these trials took place both displayed as a histogram and as a US map.
 ```{r}
 breast_cancer <- read.csv("Breast_Cancer.csv", nrows = 197)
 breast_cancer_df <- as.data.frame(breast_cancer)
@@ -63,7 +65,7 @@ state_choropleth(df_BC_map,
                     na.value = "grey")
 ```
 
-
+##Top 1000 clinical cancer trials, non-specific to one cancer, display where each trial occurred in each state. Data is displayed as a histogram for numerical comparison and on a map for visual reference. 
 ```{r}
 Top_1000 <- read.csv("Top_1000_Cancers.csv")
 
@@ -114,8 +116,9 @@ state_choropleth(Top_1000_map,
                     na.value = "grey")
 
 ```
+
+
 ```{r}
-library(ggalluvial)
 Top_1000 <- Top_1000 |>
   mutate(
     Interventions = case_when(
@@ -170,7 +173,7 @@ Flow_Phase_Data <- Flow_Phase_Data |>
   )
 ```
 
-
+##Trials include various forms of intervention, ranging from drugs to biologicals to device and more. These different forms of intervention may influence the viability of trials as they go through different phases of FDA approval. This flow plot shows the where the trials based on various intervention types, what phase they ended up in and whether or not the trial went to completion. 
 ```{r}
 ggplot(Flow_Phase_Data, aes(axis1 = Interventions,
                             axis2 = Phase_Rank,
@@ -194,8 +197,8 @@ ggplot(Flow_Phase_Data, aes(axis1 = Interventions,
   
 ```
 
+##
 ```{r}
-library(dplyr)
 Top_1000$Enrollment <- as.numeric(Top_1000$Enrollment)
 
 avg_enrollment <- Top_1000 |>
@@ -228,6 +231,9 @@ ggplot(
 ```
 
 
+```{r}
+
+```
 
 
 
