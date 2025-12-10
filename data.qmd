@@ -1,8 +1,9 @@
 # Data
+The data used in this analysis is all received from clinicaltrials.gov. This data is publically available and all known clinical trials must be registered through this website, thus it contains all of the clinical trials being conducted and that have been conducted. Given that there are large amounts of data, the data that is used in this project is cutoff to the top trials in the sets. While this dataset is comprehensive, the inputs are done by the principle investigators (PI) doing the research, and thus there are inconsistencies across inputs in the data. For example, the types of cancer cannot be used because they are each listed differently according to how the PI labels the cancer. 
 
 ```{r}
 ## Description
-The data used in this analysis is all received from clinicaltrials.gov. This data is publically available and all known clinical trials must be registered through this website, thus it contains all of the clinical trials being conducted and that have been conducted. Given that there are large amounts of data, the data that is used in this project is cutoff to the top trials in the sets. While this dataset is comprehensive, the inputs are done by the principle investigators (PI) doing the research, and thus there are inconsistencies across inputs in the data. For example, the types of cancer cannot be used because they are each listed differently according to how the PI labels the cancer. 
+
 
 ## Missing value analysis
 
