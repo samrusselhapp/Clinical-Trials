@@ -1,1 +1,5 @@
 # Introduction
+
+Cancer remains one of the leading causes of morbidity and mortality worldwide, driving a continuous demand for effective therapeutic development. Clinical trials play a critical role in translating scientific discoveries into approved treatments, yet the majority of cancer trials fail to progress through all phases of development. Understanding the factors that contribute to trial success or failure is essential for improving study design, resource allocation, and patient outcomes.
+
+Through exploratory data analysis and data visualization, this project seeks to provide insight into what differentiates successful cancer clinical trials from those that fail or stall. These findings can inform future trial design and highlight structural challenges within oncology research that contribute to high attrition rates across clinical phases.
