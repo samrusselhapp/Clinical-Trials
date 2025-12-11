@@ -1,13 +1,74 @@
-# Data
-The data used in this analysis is all received from clinicaltrials.gov. This data is publically available and all known clinical trials must be registered through this website, thus it contains all of the clinical trials being conducted and that have been conducted. Given that there are large amounts of data, the data that is used in this project is cutoff to the top trials in the sets. While this dataset is comprehensive, the inputs are done by the principle investigators (PI) doing the research, and thus there are inconsistencies across inputs in the data. For example, the types of cancer cannot be used because they are each listed differently according to how the PI labels the cancer. 
+# Data Sourcing
+The data used in this analysis is all received from clinicaltrials.gov. This data is publically available and all known clinical trials must be registered through this website, thus it contains all of the clinical trials being conducted and that have been conducted. Given that there are large amounts of data, the data that is used in this project is cutoff to the top trials in the sets. While this data set is comprehensive, the inputs are done by the principle investigators (PI) doing the research, and thus there are inconsistencies across inputs in the data. For example, the types of cancer (unless pre-filtered when scraping the data, as done with the breast cancer data) cannot be used because they are each listed differently according to how the PI labels the cancer. 
+
+## Missing Values
 
 ```{r}
-## Description
-
-
-## Missing value analysis
-
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(tidycensus)
+library(sf)
+library(usmap)
+library(choroplethr)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(ggalluvial)
 ```
 
+
+```{r}
+Top_1000 <- read.csv("Top_1000_Cancers.csv")
+
+#take out excess columns 
+Top_1000 <- Top_1000 |>
+  select(Study.Status:Locations)
+
+#extrapolate states from location
+Top_1000 <- Top_1000 |>
+  mutate(
+    region = str_extract(
+      Locations, "([^,]+),\\s*\\d{5}") |>
+    str_replace(",\\s*\\d{5}", "") |>
+    str_trim()
+  )
+
+# Extrapolate City
+Top_1000 <- Top_1000 %>%
+  mutate(
+    City = str_split_i(Locations, pattern = ",\\s*", i = 3)
+  )
+
+Top_1000_map <- Top_1000 |>
+  count(region, name = "value")
+
+Top_1000$region <- ifelse(Top_1000$region %in% state.name, Top_1000$region, NA)
+```
+
+
+```{r}
+## Missing value analysis
+
+completeness_data <- Top_1000 |>
+  summarise(across(everything(), ~ sum(!is.na(.)) / n())) |>
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Completeness")
+
+(
+  ggplot(completeness_data, aes(x = Variable, y = Completeness, fill = Completeness)) +
+    geom_col() +
+    scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+    geom_text(aes(label = scales::percent(Completeness, accuracy = 0.1)), vjust = -0.5, size = 3) +
+    scale_fill_gradient(low = "firebrick", high = "forestgreen") +
+    labs(title = "Missing Data per Column",
+         x = "",
+         y = "Percent Complete") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "none")
+)
+
+```
+The graph represents the amount of data that is in each column for the top 1000 clinical trials (used for the bulk of the graphs). The data sourced directly from the clinicaltrials.gov had 100% data in each column. Columns such as "region" and "city" were self-created from "Locations", for graphing purposes, and thus were manipulated from the original data source, resulting in some missing values where the region/city may not have been specified. Often missing values in cities/regions is attributed to the trial being outside of the US and thus it could not be classified as a US state resulting in a NA.
 
 
